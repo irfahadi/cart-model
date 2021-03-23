@@ -18,13 +18,14 @@ const findCart = async (req,res) => {
           }
         });
         return res.send(cart);
-    }
-    else {
+    }else {
       const cart = await req.context.models.cart.findAll({
-        where: { cart_acco_id : req.params.acco_id },
-      });
+        where:{cart_acco_id:req.params.acco_id}
+      }
+      );
       return res.send(cart);
-    }   
+  }   
+        
 }
 
 
@@ -61,7 +62,10 @@ const updateCart = async (req, res) => {
     cart_line_items.forEach( async (element) => {
       console.log(element)
       const clit = await req.context.models.clit.update({
-        clit_stat_name:element.clit_stat_name
+        clit_qty: element.clit_qty,
+        clit_subweight : element.clit_subweight,
+        clit_subtotal: element.clit_subtotal,
+        clit_stat_name:element.clit_stat_name,
       },
       {
         where: {

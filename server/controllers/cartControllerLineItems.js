@@ -30,6 +30,12 @@ const findClit = async (req,res) => {
 }
 
 const createCart = async (req, res, next) => {
+  const {
+    clit_subweight,
+    clit_subtotal,
+    clit_qty,
+  } = req.body;
+  let cartItem = null
   try {
     if (req.params.cart_id == undefined) {
       const cart = await req.context.models.cart.create({
@@ -43,38 +49,51 @@ const createCart = async (req, res, next) => {
       return next();  
     } 
     else {
-      cartItem = await req.context.models.clit.findAll({
+      cartItem = await req.context.models.clit.findOne({
         where:{ clit_cart_id: req.params.cart_id,
           clit_prod_id: req.params.prod_id,
           
         } 
       })
+      // console.log(cartItem)
     }
   } catch (error) {
     return res.send(error);
   }
-      const clit = await req.context.models.clit.update({
-        clit_subweight: cartItem[0].clit_subweight+clit_subweight,
-        clit_subtotal: cartItem[0].clit_subtotal+clit_subtotal,
-        clit_qty: cartItem[0].clit_qty+clit_qty,
-        clit_prod_id: cartItem[0].clit_prod_id,
-        clit_stat_name: cartItem[0].clit_stat_name,
-        clit_cart_id: cartItem[0].clit_cart_id
-      },
-        {
-          where: {
-            clit_id: cartItem[0].clit_id
+      if(cartItem==null){
+        const clit = await req.context.models.clit.create({
+          clit_subweight: clit_subweight,
+          clit_subtotal: clit_subtotal,
+          clit_qty: clit_qty,
+          clit_prod_id: req.params.prod_id,
+          clit_stat_name: 'PENDING',
+          clit_cart_id: req.params.cart_id
+        });
+        return res.send(clit);
+      }else{
+        const clit = await req.context.models.clit.update({
+          clit_subweight: cartItem.clit_subweight+clit_subweight,
+          clit_subtotal: cartItem.clit_subtotal+clit_subtotal,
+          clit_qty: cartItem.clit_qty+clit_qty,
+          clit_prod_id: cartItem.clit_prod_id,
+          clit_stat_name: cartItem.clit_stat_name,
+          clit_cart_id: cartItem.clit_cart_id
+        },
+          {
+            where: {
+              clit_id: cartItem.clit_id
+            }
           }
-        }
-      );
-      return res.send(clit);
+        );
+        return res.send(clit);
+      }
     
 };
 
 const createClit = async (req,res) =>{
   let cart = null
   try {
-    cart = await req.context.models.cart.findAll({
+    cart = await req.context.models.cart.findOne({
       where:{ cart_acco_id: req.params.acco_id}
     }) 
   } catch (error) {
@@ -93,7 +112,7 @@ const createClit = async (req,res) =>{
     clit_qty: clit_qty,
     clit_prod_id: clit_prod_id,
     clit_stat_name: clit_stat_name,
-    clit_cart_id: cart[0].cart_id 
+    clit_cart_id: cart.cart_id 
   })
   return res.send(clit)
 }
