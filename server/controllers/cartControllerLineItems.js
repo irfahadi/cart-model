@@ -143,7 +143,7 @@ const updateClit = async (req, res) => {
 };
 const deleteClit = async (req, res) => {
     const result = await req.context.models.clit.destroy({
-      where: { clit_id : req.params.cart_id },
+      where: { clit_cart_id : req.params.cart_id },
     });
   
     return res.send(200);
