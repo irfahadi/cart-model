@@ -9,6 +9,6 @@ router.post('/:acco_id', indexCtrl.clit.createCart, indexCtrl.clit.createClit);
 router.post('/:acco_id/:cart_id:', indexCtrl.clit.createClit);
 router.post('/:acco_id/:cart_id/:prod_id', indexCtrl.clit.createCart);
 router.put('/:clit_id', indexCtrl.clit.updateClit);
-router.delete('/:clit_id', indexCtrl.clit.deleteClit);
+router.delete('/:cart_id', indexCtrl.clit.deleteClit);
 
 export default router;

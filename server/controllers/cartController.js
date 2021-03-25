@@ -44,7 +44,7 @@ const createCart = async (req,res) =>{
 }
 const updateCart = async (req, res) => {
     const { cart_total_weight, cart_total_amount, cart_total_qty, cart_acco_id, cart_stat_name, cart_line_items} = req.body;
-    console.log(cart_line_items)
+    // console.log(cart_line_items)
     const cart = await req.context.models.cart.update({
       cart_created_on: Date.now(),
       cart_total_weight: cart_total_weight,
@@ -89,6 +89,6 @@ const deleteCart = async (req, res) => {
 
 
 // Gunakan export default agar semua function bisa dipakai di file lain.
-export default {
+ export default {
     findCart, createCart, updateCart, deleteCart
 }
