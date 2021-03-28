@@ -149,9 +149,17 @@ const deleteClit = async (req, res) => {
     return res.send(200);
   };
 
+const deleteItem = async (req, res) => {
+    const result = await req.context.models.clit.destroy({
+      where: { clit_id : req.params.clit_id },
+    });
+  
+    return res.send(200);
+  };
+
 
 
 // Gunakan export default agar semua function bisa dipakai di file lain.
 export default {
-    findClit, createClit, updateClit, deleteClit, createCart
+    findClit, createClit, updateClit, deleteClit, createCart, deleteItem
 }
