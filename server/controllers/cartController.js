@@ -3,7 +3,7 @@
 const findCart = async (req,res) => {
     if (req.params.stat_name){
         const cart = await req.context.models.cart.findOne({
-          where: { cart_acco_id : req.params.acco_id, cart_id: req.params.cart_id },
+          where: { cart_acco_id : req.params.acco_id },
           include:{
             model:req.context.models.clit,
             where:{
@@ -18,6 +18,23 @@ const findCart = async (req,res) => {
           }
         });
         return res.send(cart);
+    }else if (req.params.cart_id){
+      const cart = await req.context.models.cart.findOne({
+        where: { cart_acco_id : req.params.acco_id, cart_id: req.params.cart_id },
+        include:{
+          model:req.context.models.clit,
+          where:{
+            clit_stat_name: req.params.stat_name
+          },
+          include:{
+            model:req.context.models.product,
+              include:{
+                model:req.context.models.productImages
+              }
+          }
+        }
+      });
+      return res.send(cart);
     }else {
       const cart = await req.context.models.cart.findAll({
         where:{cart_acco_id:req.params.acco_id}
