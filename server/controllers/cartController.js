@@ -2,7 +2,7 @@
 // findAll = select * from regions
 const findCart = async (req,res) => {
     if (req.params.stat_name){
-        const cart = await req.context.models.cart.findOne({
+        const cart = await req.context.models.cart.findAll({
           where: { cart_acco_id : req.params.acco_id },
           include:{
             model:req.context.models.clit,
@@ -19,7 +19,7 @@ const findCart = async (req,res) => {
         });
         return res.send(cart);
     }else if (req.params.cart_id){
-      const cart = await req.context.models.cart.findOne({
+      const cart = await req.context.models.cart.findAll({
         where: { cart_acco_id : req.params.acco_id, cart_id: req.params.cart_id },
         include:{
           model:req.context.models.clit,
