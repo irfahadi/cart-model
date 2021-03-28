@@ -2,8 +2,8 @@
 // findAll = select * from regions
 const findCart = async (req,res) => {
     if (req.params.stat_name){
-        const cart = await req.context.models.cart.findAll({
-          where: { cart_acco_id : req.params.acco_id },
+        const cart = await req.context.models.cart.findOne({
+          where: { cart_acco_id : req.params.acco_id, cart_id: req.params.cart_id },
           include:{
             model:req.context.models.clit,
             where:{
